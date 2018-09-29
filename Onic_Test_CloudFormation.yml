@@ -10,8 +10,6 @@ Resources:
       EnableDnsHostnames: 'false'
       Tags:
         - Key: Name
-          Value: ONICATESTVPC2
-        - Key: Name
           Value: ONICATEST
   ONICATESTSUBNETPUBLIC1:
     Type: 'AWS::EC2::Subnet'
@@ -21,7 +19,7 @@ Resources:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICATESTSUBNETPUBLIC1
+          Value: ONICATEST
   ONICATESTSUBNETPUBLIC2:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -30,7 +28,7 @@ Resources:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICATESTSUBNETPUBLIC2
+          Value: ONICATEST
   ONICATESTSUBNETPRIVATE1:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -39,7 +37,7 @@ Resources:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICATESTSUBNETPRIVATE1
+          Value: ONICATEST
   ONICATESTSUBNETPRIVATE2:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -48,13 +46,13 @@ Resources:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICATESTSUBNETPRIVATE2
+          Value: ONICATEST
   ONICATESTIGW1:
     Type: 'AWS::EC2::InternetGateway'
     Properties:
       Tags:
         - Key: Name
-          Value: ONICATESTIGW1
+          Value: ONICATEST
   ONICATESTNATGW1:
     DependsOn: VPCGatewayAttach
     Type: AWS::EC2::NatGateway
@@ -66,7 +64,7 @@ Resources:
       SubnetId: !Ref ONICATESTSUBNETPUBLIC1
       Tags:
         - Key: Name
-          Value: ONICATESTNATGW1
+          Value: ONICATEST
   dopta49753c1:
     Type: 'AWS::EC2::DHCPOptions'
     Properties:
@@ -83,14 +81,14 @@ Resources:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICATESTRTPUBLIC
+          Value: ONICATEST
   ONICATESTRTPRIVATE:
     Type: 'AWS::EC2::RouteTable'
     Properties:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICATESTRTPRIVATE
+          Value: ONICATEST
   elbONICATESTELB1:
     Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
     Properties:
@@ -118,7 +116,7 @@ Resources:
           InstanceProtocol: HTTP
       Tags:
         - Key: Name
-          Value: ELB-1
+          Value: ONICATEST
   eip3517554231:
     Type: 'AWS::EC2::EIP'
     Properties:
@@ -143,7 +141,7 @@ Resources:
         - !Ref elbONICATESTELB1
       Tags:
         - Key: Name
-          Value: Webservers
+          Value: ONICATEST
           PropagateAtLaunch: true
       TerminationPolicies:
         - Default
@@ -189,7 +187,7 @@ Resources:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICA-TEST-SG-WEBSERVER-1
+          Value: ONICATEST
   sgONICATESTSGELB1:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -199,7 +197,7 @@ Resources:
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
-          Value: ONICA-TEST-SG-ELB-1
+          Value: ONICATEST
   acl3:
     Type: 'AWS::EC2::NetworkAclEntry'
     Properties:
@@ -309,4 +307,4 @@ Resources:
       GroupId: !Ref sgONICATESTSGELB1
       IpProtocol: '-1'
       CidrIp: 0.0.0.0/0
-Description: Onica Test CloudFormer Template
+
