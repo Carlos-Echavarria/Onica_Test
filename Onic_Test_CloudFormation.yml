@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Onica Test Cloudformation Template v1.0
 Resources:
-  ONICATESTVPC2:
+  ONICATESTVPC:
     Type: 'AWS::EC2::VPC'
     Properties:
       CidrBlock: 10.100.0.0/16
@@ -10,49 +10,49 @@ Resources:
       EnableDnsHostnames: 'false'
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTVPC
   ONICATESTSUBNETPUBLIC1:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.1.0/24
       AvailabilityZone: us-east-2a
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTSUBNETPUBLIC1
   ONICATESTSUBNETPUBLIC2:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.2.0/24
       AvailabilityZone: us-east-2b
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTSUBNETPUBLIC2
   ONICATESTSUBNETPRIVATE1:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.10.0/24
       AvailabilityZone: us-east-2a
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTSUBNETPRIVATE1
   ONICATESTSUBNETPRIVATE2:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.11.0/24
       AvailabilityZone: us-east-2b
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTSUBNETPRIVATE2
   ONICATESTIGW1:
     Type: 'AWS::EC2::InternetGateway'
     Properties:
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTIGW
   ONICATESTNATGW1:
     DependsOn: VPCGatewayAttach
     Type: AWS::EC2::NatGateway
@@ -64,7 +64,16 @@ Resources:
       SubnetId: !Ref ONICATESTSUBNETPUBLIC1
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTNATGW
+  VPCGatewayAttach:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref ONICATESTVPC
+      InternetGatewayId: !Ref ONICATESTIGW1
+  eip3517554231:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc      
   dopta49753c1:
     Type: 'AWS::EC2::DHCPOptions'
     Properties:
@@ -74,21 +83,21 @@ Resources:
   acl0ebc2483ce3195968:
     Type: 'AWS::EC2::NetworkAcl'
     Properties:
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
   ONICATESTRTPUBLIC:
     Type: 'AWS::EC2::RouteTable'
     Properties:
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTRTPUBLIC
   ONICATESTRTPRIVATE:
     Type: 'AWS::EC2::RouteTable'
     Properties:
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTRTPRIVATE
   elbONICATESTELB1:
     Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
     Properties:
@@ -116,11 +125,7 @@ Resources:
           InstanceProtocol: HTTP
       Tags:
         - Key: Name
-          Value: ONICATEST
-  eip3517554231:
-    Type: 'AWS::EC2::EIP'
-    Properties:
-      Domain: vpc
+          Value: ONICATESTELB
   asgONICAASG1:
     Type: 'AWS::AutoScaling::AutoScalingGroup'
     Properties:
@@ -141,7 +146,7 @@ Resources:
         - !Ref elbONICATESTELB1
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTWEBSERVERS
           PropagateAtLaunch: true
       TerminationPolicies:
         - Default
@@ -174,7 +179,7 @@ Resources:
                 cd /etc/nginx/
                 wget -O nginx.conf https://raw.githubusercontent.com/Carlos-Echavarria/Onica_Test/master/nginx.conf
                 cd /etc/nginx/conf.d
-                wget -O onca-test.conf https://raw.githubusercontent.com/Carlos-Echavarria/Onica_Test/master/onica-test.conf
+                wget -O onica-test.conf https://raw.githubusercontent.com/Carlos-Echavarria/Onica_Test/master/onica-test.conf
 
                 systemctl enable nginx
                 service nginx start
@@ -184,20 +189,20 @@ Resources:
       GroupDescription: >-
         As per instructions Security Group allowing only HTTP traffic from the
         load balancer to the instances
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTSGWEBSERVERS
   sgONICATESTSGELB1:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupDescription: >-
         As per instructions Security Group allowing HTTP traffic to load
         balancer from anywhere
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       Tags:
         - Key: Name
-          Value: ONICATEST
+          Value: ONICATESTSGELB
   acl3:
     Type: 'AWS::EC2::NetworkAclEntry'
     Properties:
@@ -235,11 +240,6 @@ Resources:
     Properties:
       NetworkAclId: !Ref acl0ebc2483ce3195968
       SubnetId: !Ref ONICATESTSUBNETPRIVATE1
-  VPCGatewayAttach:
-    Type: 'AWS::EC2::VPCGatewayAttachment'
-    Properties:
-      VpcId: !Ref ONICATESTVPC2
-      InternetGatewayId: !Ref ONICATESTIGW1
   subnetroute6:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
@@ -277,7 +277,7 @@ Resources:
   dchpassoc2:
     Type: 'AWS::EC2::VPCDHCPOptionsAssociation'
     Properties:
-      VpcId: !Ref ONICATESTVPC2
+      VpcId: !Ref ONICATESTVPC
       DhcpOptionsId: !Ref dopta49753c1
   ingress3:
     Type: 'AWS::EC2::SecurityGroupIngress'
@@ -307,4 +307,3 @@ Resources:
       GroupId: !Ref sgONICATESTSGELB1
       IpProtocol: '-1'
       CidrIp: 0.0.0.0/0
-
