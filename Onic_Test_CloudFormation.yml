@@ -150,7 +150,7 @@ Resources:
   lcONICALAUNCHCFG1:
     Type: 'AWS::AutoScaling::LaunchConfiguration'
     Properties:
-      ImageId: ami-04681a1dbd79675a5
+      ImageId: ami-0b59bfac6be064b78
       InstanceType: t2.micro
       SecurityGroups:
         - !Ref sgONICATESTSGWEBSERVER1
