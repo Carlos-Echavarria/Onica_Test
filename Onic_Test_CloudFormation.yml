@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
+Description: Onica Test Cloudformation Template v1.0
 Resources:
   ONICATESTVPC2:
     Type: 'AWS::EC2::VPC'
@@ -10,11 +11,13 @@ Resources:
       Tags:
         - Key: Name
           Value: ONICATESTVPC2
+        - Key: Name
+          Value: ONICATEST
   ONICATESTSUBNETPUBLIC1:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.1.0/24
-      AvailabilityZone: us-east-1a
+      AvailabilityZone: us-east-2a
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
@@ -23,7 +26,7 @@ Resources:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.2.0/24
-      AvailabilityZone: us-east-1b
+      AvailabilityZone: us-east-2b
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
@@ -32,7 +35,7 @@ Resources:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.10.0/24
-      AvailabilityZone: us-east-1a
+      AvailabilityZone: us-east-2a
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
@@ -41,7 +44,7 @@ Resources:
     Type: 'AWS::EC2::Subnet'
     Properties:
       CidrBlock: 10.100.11.0/24
-      AvailabilityZone: us-east-1b
+      AvailabilityZone: us-east-2b
       VpcId: !Ref ONICATESTVPC2
       Tags:
         - Key: Name
@@ -124,8 +127,8 @@ Resources:
     Type: 'AWS::AutoScaling::AutoScalingGroup'
     Properties:
       AvailabilityZones:
-        - us-east-1a
-        - us-east-1b
+        - us-east-2a
+        - us-east-2b
       Cooldown: '300'
       DesiredCapacity: '2'
       HealthCheckGracePeriod: '300'
