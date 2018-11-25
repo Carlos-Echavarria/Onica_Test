@@ -15,7 +15,6 @@
         state: present
     - name: Creo el directorio raiz y copio archivo
       file:
-        name: Creo
         path: /var/www/html
         state: directory
       copy:
@@ -25,12 +24,9 @@
       service:
         name: php-fpm
         state: started
-      service:
         name: php-fpm.service
         enabled: yes
-      service:
         name: nginx.service
         enabled: yes
-      service:
         name: nginx
         state: restarted
