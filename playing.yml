@@ -13,14 +13,12 @@
           - mariadb
           - git
         state: present
-    - name: Creo el directorio raiz y copio archivo
       file:
         path: /var/www/html
         state: directory
       copy:
         src: /usr/share/nginx/html/index.html
         dest: /var/www/html/
-    - name: Tunning de servicios
       service:
         name: php-fpm
         state: started
