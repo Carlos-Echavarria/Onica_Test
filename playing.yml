@@ -127,7 +127,7 @@
       name: root
       password: "{{ mysql_root_password }}"
       priv: '*.*:ALL,GRANT'
-      host: {{ item }}
+      host: "{{ item }}"
     with_items:
       - "{{ ansible_hostname }}"
       - 127.0.0.1
