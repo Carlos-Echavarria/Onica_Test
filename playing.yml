@@ -10,7 +10,7 @@
         - php-fpm
         - mariadb-server
         - mariadb
-        - mypython-sql
+        - mysql-python
         - git
       state: present
   - file:
