@@ -69,5 +69,5 @@
       name: nginx.service
       enabled: yes
   - service:
-      name: nginx
+      name: nginx.service
       state: restarted
