@@ -123,7 +123,7 @@
       state: absent
   - mysql_user:
       login_user: root
-      login_password:''
+      login_password: ''
       name: root
       password: {{ mysql_root_password }}
       priv: *.*:ALL,GRANT
