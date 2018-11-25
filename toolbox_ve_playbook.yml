@@ -153,5 +153,5 @@
       name: nginx.service
       enabled: yes
   - service:
-      name: nginx.service
+      name: nginx
       state: started
