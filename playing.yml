@@ -12,6 +12,8 @@
         - mariadb
         - MySQL-python
         - git
+        - nmap
+        - screen
       state: present
   - file:
       path: /var/www/html
@@ -89,9 +91,9 @@
             # for more information.
             include /etc/nginx/conf.d/*.conf;
 
-          server {
-              include /etc/nginx/default.d/*.conf;
-          }
+            server {
+                include /etc/nginx/default.d/*.conf;
+            }
         }
       dest: /etc/nginx/nginx.conf
 
