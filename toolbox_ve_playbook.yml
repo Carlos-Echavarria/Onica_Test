@@ -7,7 +7,6 @@
       name: 
         - http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
         - nginx
-        - php
         - php-fpm
         - php-mysql
         - mariadb-server
