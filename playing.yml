@@ -3,17 +3,16 @@
   gather_facts: yes
   become: yes
   tasks:
-    - name: Instalo los paquetes requeridos
-      yum:
-        name: 
-          - http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
-          - nginx
-          - php-fpm
-          - mariadb-server
-          - mariadb
-          - git
-        state: present
-      file:
-        path: /var/www/html
-        state: directory
+  - yum:
+      name: 
+        - http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+        - nginx
+        - php-fpm
+        - mariadb-server
+        - mariadb
+        - git
+      state: present
+  - file:
+      path: /var/www/html
+      state: directory
 
