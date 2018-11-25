@@ -138,6 +138,9 @@
       - ::1
       - localhost
   - service:
+      name: mariadb
+      staute: restarted
+  - service:
       name: php-fpm
       state: started
   - service:
