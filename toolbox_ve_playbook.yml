@@ -103,6 +103,10 @@
  
   - shell: sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
   - shell: sed -i -e "s|listen = 127.0.0.1:9000|listen = /var/run/php-fpm/php-fpm.sock|" /etc/php-fpm.d/www.conf
+  - shell: sed -i -e "s|;listen.owner = nobody|listen.owner = nobody|" /etc/php-fpm.d/www.conf
+  - shell: sed -i -e "s|;listen.group = nobody|listen.group = nobody|" /etc/php-fpm.d/www.conf
+  - shell: sed -i -e "s|user = apache|user = nginx|" /etc/php-fpm.d/www.conf
+  - shell: sed -i -e "s|group = apache|group = nginx|" /etc/php-fpm.d/www.conf
 
   - service:
       name: mariadb
