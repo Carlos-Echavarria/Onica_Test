@@ -1,6 +1,6 @@
 --- # Playbook para Test Toolbox TVE
 - hosts: localhost
-  gather_facts: no
+  gather_facts: yes
   become: yes
   tasks:
     - name: Instalo los paquetes requeridos
