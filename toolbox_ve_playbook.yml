@@ -17,9 +17,16 @@
   - file:
       path: /var/www/html
       state: directory
+  - find:
+      paths: "/usr/share/nginx/html/"
+      recurse: no
+      patterns: "*.*"
+    register: files_to_copy
   - copy:
-      src: /usr/share/nginx/html/index.html
+      src: "{{ item.path }}"
       dest: /var/www/html/
+      flat: yes
+    with_items: "{{ files_to_copy.files }}"
   - copy:
       content: |
         server {
