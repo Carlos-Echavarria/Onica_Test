@@ -11,9 +11,6 @@
         - mariadb-server
         - mariadb
         - MySQL-python
-        - git
-        - nmap
-        - screen
       state: present
   - file:
       path: /var/www/html
