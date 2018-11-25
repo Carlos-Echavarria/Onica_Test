@@ -14,13 +14,19 @@
         - mariadb
         - MySQL-python
       state: present
+  - file:
+      path: /var/www/html
+      state: directory
+  - copy:
+      src: /usr/share/nginx/html/index.html
+      dest: /var/www/html/
   - copy:
       content: |
         server {
           listen 80;
           server_name localhost;
             
-          root /usr/share/nginx/html;
+          root /var/www/html;
           index index.php index.html index.htm;
             
           location / {
@@ -31,7 +37,7 @@
           error_page 500 502 503 504 /50x.html;
         
           location = /50x.html {
-            root /usr/share/nginx/html;
+            root /var/www/html;
           }
               
           location ~ \.php$ {
@@ -93,7 +99,7 @@
         <?php
         phpinfo();
         ?>
-      dest: /usr/share/nginx/html/info.php
+      dest: /var/www/html/info.php
  
   - shell: sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
   - shell: sed -i -e "s|listen = 127.0.0.1:9000|listen = /var/run/php-fpm/php-fpm.sock|" /etc/php-fpm.d/www.conf
