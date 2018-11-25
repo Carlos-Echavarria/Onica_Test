@@ -104,6 +104,13 @@
   - shell: sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
   - shell: sed -i -e "s|listen = 127.0.0.1:9000|listen = /var/run/php-fpm/php-fpm.sock|" /etc/php-fpm.d/www.conf
   - service:
+      name: mariadb
+      state: started
+  - service:
+      name: mariadb
+      enabled: yes 
+  - 
+  - service:
       name: php-fpm
       state: started
   - service:
