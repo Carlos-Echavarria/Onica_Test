@@ -50,26 +50,28 @@
                 include fastcgi_params;
             }
          }
-         dest: /etc/nginx/conf.d/default.conf
+        dest: /etc/nginx/conf.d/default.conf
       copy:
         content: |
           <?php
           phpinfo();
           ?>
-#- name: Tunning de configuracion
-#    shell: "sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini"
-#    shell: "sed -i -e "s|listen = 127.0.0.1:9000|listen = /var/run/php-fpm/php-fpm.sock|" /etc/php-fpm.d/www.conf"
+        dest: /var/www/html/info.php
+
+    - name: Tunning de configuracion
+      shell: "sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini"
+      shell: "sed -i -e "s|listen = 127.0.0.1:9000|listen = /var/run/php-fpm/php-fpm.sock|" /etc/php-fpm.d/www.conf"
     
-- name: Tunning de servicios
-    service:
-      name: php-fpm
-      state: started
-    service:
-      name: php-fpm.service
-      enabled: yes
-    service:
-      name: nginx.service
-      enabled: yes
-    service:
-      name: nginx
-      state: restarted
+    - name: Tunning de servicios
+      service:
+        name: php-fpm
+        state: started
+      service:
+        name: php-fpm.service
+        enabled: yes
+      service:
+        name: nginx.service
+        enabled: yes
+      service:
+        name: nginx
+        state: restarted
