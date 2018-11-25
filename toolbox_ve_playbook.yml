@@ -142,7 +142,7 @@
       - localhost
   - service:
       name: mariadb
-      staute: restarted
+      staute: daemon_reload
   - service:
       name: php-fpm
       state: started
