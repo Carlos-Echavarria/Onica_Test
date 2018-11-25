@@ -16,15 +16,4 @@
       file:
         path: /var/www/html
         state: directory
-      copy:
-        src: /usr/share/nginx/html/index.html
-        dest: /var/www/html/
-      service:
-        name: php-fpm
-        state: started
-        name: php-fpm.service
-        enabled: yes
-        name: nginx.service
-        enabled: yes
-        name: nginx
-        state: restarted
+
