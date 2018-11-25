@@ -1,2 +1,7 @@
 [local]
 localhost
+
+[local:vars]
+ansible_user=user
+ansible_password=ansible!!2018
+ansible_connection=ssh
