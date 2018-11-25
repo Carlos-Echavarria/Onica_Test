@@ -15,6 +15,7 @@
         state: present
     - name: Creo el directorio raiz y copio archivo
       file:
+        name: Creo
         path: /var/www/html
         state: directory
       copy:
