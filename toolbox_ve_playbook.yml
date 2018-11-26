@@ -17,9 +17,6 @@
   - file:
       path: /var/www/html
       state: directory
-  - file:
-      path: /var/www/html
-      state: directory
   - copy:
       src: /usr/share/nginx/html/index.html
       dest: /var/www/html/
