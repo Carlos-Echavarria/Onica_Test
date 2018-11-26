@@ -102,35 +102,35 @@
   - shell: sed -i -e "s|user = apache|user = nginx|" /etc/php-fpm.d/www.conf
   - shell: sed -i -e "s|group = apache|group = nginx|" /etc/php-fpm.d/www.conf
 
-# - service:
-#    name: mariadb
-#      state: started
-#  - service:
-#      name: mariadb
-#      enabled: yes 
-#  - mysql_user: 
-#      name: ''
-#      host: "{{ ansible_hostname }}"
-#      state: absent
-#  - mysql_user:
-#      name: ''
-#      host: localhost
-#      state: absent
-#  - mysql_db:
-#      name: test
-#      state: absent
-#  - mysql_user:
-#      login_user: root
-#      login_password: ''
-#      name: root
-#      password: "{{ mysql_root_password }}"
-#      priv: '*.*:ALL,GRANT'
-#      host: "{{ item }}"
-#    with_items:
-#      - "{{ ansible_hostname }}"
-#      - 127.0.0.1
-#      - ::1
-#      - localhost
+  - service:
+      name: mariadb
+      state: started
+  - service:
+      name: mariadb
+      enabled: yes 
+  - mysql_user: 
+      name: ''
+      host: "{{ ansible_hostname }}"
+      state: absent
+  - mysql_user:
+      name: ''
+    host: localhost
+    state: absent
+  - mysql_db:
+      name: test
+      state: absent
+  - mysql_user:
+      login_user: root
+      login_password: ''
+      name: root
+      password: "{{ mysql_root_password }}"
+      priv: '*.*:ALL,GRANT'
+      host: "{{ item }}"
+    with_items:
+      - "{{ ansible_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost
   - service:
       name: php-fpm
       state: started
