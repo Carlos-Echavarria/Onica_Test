@@ -25,78 +25,71 @@
       dest: /var/www/html/
   - copy:
       content: |
-        server {
-          listen 80 default_server;
-          listen [::]:80 default_server ipv6only=on;
-            
-          root /var/www/html;
-          index index.php index.html index.htm;
-            
-          server_name localhost;
-            
-          location / {
-              try_files $uri $uri/ =404;
-          }
-              
-          error_page 404 /404.html;
-          error_page 500 502 503 504 /50x.html;
-        
-          location = /50x.html {
-            root /usr/share/nginx/html;
-          }
-              
-          location ~ \.php$ {
-              try_files $uri =404;
-              fastcgi_split_path_info ^(.+\.php)(/.+)$;
-              fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
-              fastcgi_index index.php;
-              fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-              include fastcgi_params;
-          }
-        }
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+    root /var/www/html;
+    index index.php index.html index.htm;
+    server_name localhost;
+    
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to displaying a 404.
+        try_files $uri $uri/ =404;
+        # Uncomment to enable naxsi on this location
+        # include /etc/nginx/naxsi.rules
+    }
+        error_page 404 /404.html;
+        error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
       dest: /etc/nginx/conf.d/default.conf
   - copy:
       content: |
-        # For more information on configuration, see:
-        #   * Official English Documentation: http://nginx.org/en/docs/
-        #   * Official Russian Documentation: http://nginx.org/ru/docs/
-        user nginx;
-        worker_processes auto;
-        error_log /var/log/nginx/error.log;
-        pid /run/nginx.pid;
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
 
-        # Load dynamic modules. See /usr/share/nginx/README.dynamic.
-        include /usr/share/nginx/modules/*.conf;
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
 
-        events {
-            worker_connections 1024;
-        }
+events {
+    worker_connections 1024;
+}
 
-        http {
-            log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                              '$status $body_bytes_sent "$http_referer" '
-                              '"$http_user_agent" "$http_x_forwarded_for"';
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 
-            access_log  /var/log/nginx/access.log  main;
+    access_log  /var/log/nginx/access.log  main;
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
 
-            sendfile            on;
-            tcp_nopush          on;
-            tcp_nodelay         on;
-            keepalive_timeout   65;
-            types_hash_max_size 2048;
-
-            include             /etc/nginx/mime.types;
-            default_type        application/octet-stream;
-
-            # Load modular configuration files from the /etc/nginx/conf.d directory.
-            # See http://nginx.org/en/docs/ngx_core_module.html#include
-            # for more information.
-            include /etc/nginx/conf.d/*.conf;
-
-            server {
-                include /etc/nginx/default.d/*.conf;
-            }
-        }
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+}
       dest: /etc/nginx/nginx.conf
 
   - copy:
@@ -113,38 +106,38 @@
   #- shell: sed -i -e "s|user = apache|user = nginx|" /etc/php-fpm.d/www.conf
   #- shell: sed -i -e "s|group = apache|group = nginx|" /etc/php-fpm.d/www.conf
 
-  - service:
-      name: mariadb
-      state: started
-  - service:
-      name: mariadb
-      enabled: yes 
-  - mysql_user: 
-      name: ''
-      host: "{{ ansible_hostname }}"
-      state: absent
-  - mysql_user:
-      name: ''
-      host: localhost
-      state: absent
-  - mysql_db:
-      name: test
-      state: absent
-  - mysql_user:
-      login_user: root
-      login_password: ''
-      name: root
-      password: "{{ mysql_root_password }}"
-      priv: '*.*:ALL,GRANT'
-      host: "{{ item }}"
-    with_items:
-      - "{{ ansible_hostname }}"
-      - 127.0.0.1
-      - ::1
-      - localhost
-  - service:
-      name: mariadb
-      staute: daemon_reload
+# - service:
+#    name: mariadb
+#      state: started
+#  - service:
+#      name: mariadb
+#      enabled: yes 
+#  - mysql_user: 
+#      name: ''
+#      host: "{{ ansible_hostname }}"
+#      state: absent
+#  - mysql_user:
+#      name: ''
+#      host: localhost
+#      state: absent
+#  - mysql_db:
+#      name: test
+#      state: absent
+#  - mysql_user:
+#      login_user: root
+#      login_password: ''
+#      name: root
+#      password: "{{ mysql_root_password }}"
+#      priv: '*.*:ALL,GRANT'
+#      host: "{{ item }}"
+#    with_items:
+#      - "{{ ansible_hostname }}"
+#      - 127.0.0.1
+#      - ::1
+#      - localhost
+#  - service:
+#      name: mariadb
+#      staute: daemon_reload
   - service:
       name: php-fpm
       state: started
