@@ -114,8 +114,8 @@
       state: absent
   - mysql_user:
       name: ''
-    host: localhost
-    state: absent
+      host: localhost
+      state: absent
   - mysql_db:
       name: test
       state: absent
