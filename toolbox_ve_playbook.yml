@@ -21,6 +21,12 @@
       src: /usr/share/nginx/html/index.html
       dest: /var/www/html/
   - copy:
+      src: /usr/share/nginx/html/nginx-logo.png
+      dest: /var/www/html/
+  - copy:
+      src: /usr/share/nginx/html/poweredby.png
+      dest: /var/www/html/
+  - copy:
       content: |
         server {
             listen 80 default_server;
@@ -125,9 +131,6 @@
 #      - 127.0.0.1
 #      - ::1
 #      - localhost
-#  - service:
-#      name: mariadb
-#      staute: daemon_reload
   - service:
       name: php-fpm
       state: started
